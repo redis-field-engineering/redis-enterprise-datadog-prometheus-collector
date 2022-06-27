@@ -51,4 +51,6 @@ make
 
 ## Support 
 
-Please contact your friendly Solutions Architect for support
+Good faith effort support is available to Redis Enterprise licensed customers from field.engineers@redis.com. 
+In addition, Community support is available through Github
+
