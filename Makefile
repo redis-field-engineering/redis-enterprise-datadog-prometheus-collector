@@ -2,4 +2,4 @@
 default:	docker
 
 docker:
-	docker build -t maguec/redisenterprise-dd-prometheus .
+	docker build -t redislabs/redisenterprise-rs-hostedcloud .
