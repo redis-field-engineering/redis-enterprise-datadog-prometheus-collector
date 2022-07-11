@@ -18,7 +18,7 @@
 ```
 docker run --rm -e DATADOG_API_KEY=<DATADOG-API-KEY> -e DATADOG_SITE=datadoghq.com \
 	-e REDIS_CLOUD_ENDPOINT_URL=<FQDN:https://internal.blah.us-central1-mz.gcp.cloud.rlrcp.com:8070/metrics> \
-	redislabs/redisenterprise-rs-hostedcloud
+	maguec/redisenterprise-rs-hostedcloud
 ```
 
 ## Running the Container with TLS CA Cert
@@ -36,9 +36,9 @@ echo -n "" | openssl s_client -showcerts -servername server -connect internal.bl
 ```
 CA_CERT=$(cat cacert.pem)
 docker run --rm -e DATADOG_API_KEY=<DATADOG-API-KEY> -e DATADOG_SITE=datadoghq.com \
-	-e REDIS_CLOUD_ENDPOINT_URL=https://mague.demo-azure.redislabs.com:8070/metrics \
+	-e REDIS_CLOUD_ENDPOINT_URL=https://mague.demo-azure.maguec.com:8070/metrics \
 	-e REDIS_CLOUD_CA_CERT="${CA_CERT}" \
- 	redislabs/redisenterprise-rs-hostedcloud
+ 	maguec/redisenterprise-rs-hostedcloud
 ```
 
 ## Building the Container
