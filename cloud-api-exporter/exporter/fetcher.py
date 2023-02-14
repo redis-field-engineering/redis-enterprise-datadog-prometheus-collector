@@ -1,6 +1,7 @@
+from urllib.parse import urljoin
+
 import requests
 from pydantic import BaseModel
-from urllib.parse import urljoin
 
 CLOUD_API_BASE_URI = "https://api.redislabs.com/v1/"
 REFRESH_STAT_INTERVAL = 20

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from exporter import fetcher, database_metrics
-from exporter.database_metrics import DatabaseMetrics, DatabaseMetricsTransformer
+from exporter import database_metrics, fetcher
+from exporter.database_metrics import (DatabaseMetrics,
+                                       DatabaseMetricsTransformer)
+
 
 def sample_subscriptions():
     return {'accountId': 761976, 'subscriptions': [{'id': 1967772, 'name': 'Banker-Test-Active-Active', 'status': 'active', 'deploymentType': 'active-active', 'paymentMethodId': 9605, 'memoryStorage': 'ram', 'storageEncryption': True, 'numberOfDatabases': 1, 'paymentMethodType': 'credit-card', 'cloudDetails': [{'provider': 'GCP', 'cloudAccountId': 1, 'totalSizeInGb': 0.0586, 'links': []}], 'links': []}, {'id': 1965204, 'name': 'ray-demo', 'status': 'active', 'deploymentType': 'single-region', 'paymentMethodId': 9605, 'memoryStorage': 'ram', 'numberOfDatabases': 1, 'paymentMethodType': 'credit-card', 'storageEncryption': True, 'subscriptionPricing': [{'type': 'Shards', 'typeDetails': 'high-throughput', 'quantity': 2, 'quantityMeasurement': 'shards', 'pricePerUnit': 0.125, 'priceCurrency': 'USD', 'pricePeriod': 'hour'}, {'type': 'EBS Volume', 'quantity': 71, 'quantityMeasurement': 'GB'}, {'type': 'c5.xlarge', 'quantity': 2, 'quantityMeasurement': 'instances'}, {'type': 'm5.large', 'quantity': 1, 'quantityMeasurement': 'instances'}], 'cloudDetails': [{'provider': 'AWS', 'cloudAccountId': 6415, 'totalSizeInGb': 0.0602, 'regions': [{'region': 'us-east-1', 'networking': [{'deploymentCIDR': '10.0.0.0/26', 'subnetId': 'subnet-0f83e56d55130f7c1'}, {'deploymentCIDR': '10.0.0.64/26', 'subnetId': 'subnet-0188c390cf01f9b3f'}, {'deploymentCIDR': '10.0.0.128/26', 'subnetId': 'subnet-0cb597962ac0b938f'}], 'preferredAvailabilityZones': ['us-east-1a', 'us-east-1b', 'us-east-1c'], 'multipleAvailabilityZones': True}], 'links': []}], 'links': []}, {'id': 1966180, 'name': 'banker-observability-test-gcp', 'status': 'active', 'deploymentType': 'single-region', 'paymentMethodId': 9605, 'memoryStorage': 'ram', 'numberOfDatabases': 3, 'paymentMethodType': 'credit-card', 'storageEncryption': False, 'subscriptionPricing': [{'type': 'MinimumPrice', 'quantity': 1, 'quantityMeasurement': 'subscription', 'pricePerUnit': 0.907, 'priceCurrency': 'USD', 'pricePeriod': 'hour'}, {'type': 'Shards', 'typeDetails': 'high-throughput', 'quantity': 4, 'quantityMeasurement': 'shards', 'pricePerUnit': 0.204, 'priceCurrency': 'USD', 'pricePeriod': 'hour'}, {'type': 'Disk', 'quantity': 121, 'quantityMeasurement': 'GB', 'pricePerUnit': 0.028, 'priceCurrency': 'USD', 'pricePeriod': 'hour'}], 'cloudDetails': [{'provider': 'GCP', 'cloudAccountId': 1, 'totalSizeInGb': 0.0138, 'regions': [{'region': 'us-central1', 'networking': [{'deploymentCIDR': '10.10.0.0/24', 'vpcId': 'c23492-us-central1-1-rlrcp'}], 'preferredAvailabilityZones': ['us-central1-a'], 'multipleAvailabilityZones': False}], 'links': []}], 'links': []}], 'links': [{'rel': 'self', 'href': 'https://api.redislabs.com/v1/subscriptions', 'type': 'GET'}]}

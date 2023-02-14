@@ -1,7 +1,9 @@
-import pytest
 import context
-from context import DatabaseMetrics, DatabaseMetricsTransformer
-from context import sample_database_stats, sample_database_stats_with_shard_throughput
+import pytest
+from context import (DatabaseMetrics, DatabaseMetricsTransformer,
+                     sample_database_stats,
+                     sample_database_stats_with_shard_throughput)
+
 
 def test_database_metrics():
     stats = sample_database_stats()

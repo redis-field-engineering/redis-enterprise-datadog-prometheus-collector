@@ -1,5 +1,7 @@
-from pydantic import BaseModel
+import logging
 from typing import Optional
+
+from pydantic import BaseModel
 
 class DatabaseMetrics(BaseModel):
     """ Simple model for the fields to report as metrics """
@@ -18,6 +20,7 @@ class DatabaseMetricsTransformer():
             database_id = stats["databaseId"],
             database_name = stats["name"]
         )
+        logging.info(f"Updating published Prometheus metrics for database {metrics}")
         if "throughputMeasurement" in stats:
             throughput = stats["throughputMeasurement"]
             if throughput["by"] == "operations-per-second":

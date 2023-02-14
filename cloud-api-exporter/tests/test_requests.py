@@ -1,11 +1,14 @@
-import context
-from context import sample_subscriptions, samples_databases_from_subscription, sample_database_stats
 from unittest.mock import MagicMock
-from exporter.fetcher import MetricsFetcher
+
+import context
 import urllib3
+from context import (sample_database_stats, sample_subscriptions,
+                     samples_databases_from_subscription)
+from exporter.fetcher import MetricsFetcher
+
 urllib3.disable_warnings()
 
-def test_answer():
+def test_basic_request():
   endpoint = "redis-cloud-test.gcp.cloud.rlrcp.com" 
   key = "account-key"
   secret = "secret"
