@@ -9,8 +9,8 @@ prometheus_client.REGISTRY.unregister(prometheus_client.PROCESS_COLLECTOR)
 class MetricsExporter:
     def __init__(self, cluster_fqdn):
         self.cluster_fqdn=cluster_fqdn
-        self.throughput_gauge = Gauge("redis_estimated_max_throughput", "Estimated max throughput", ["bdb", "bdb_name", "cluster"])
-        self.persistence_info = Info("redis_data_persistence", "Indicate the type of data persistence enabled", ["bdb", "bdb_name", "cluster"])
+        self.throughput_gauge = Gauge("bdb_estimated_max_throughput", "Estimated max throughput", ["bdb", "bdb_name", "cluster"])
+        self.persistence_info = Info("bdb_data_persistence", "Indicate the type of data persistence enabled", ["bdb", "bdb_name", "cluster"])
 
     def update(self, metrics):
         if metrics.estimated_ops_per_second != None:

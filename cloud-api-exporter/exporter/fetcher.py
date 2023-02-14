@@ -1,3 +1,4 @@
+import logging
 from urllib.parse import urljoin
 
 import requests
@@ -63,7 +64,7 @@ class MetricsFetcher():
         if response.status_code == 200:
             return response.json()
         elif response.status_code == 401:
-            print(f"Unable to authenticate: {response}")
+            logging.error(f"Unable to authenticate: {response}")
             return {}
 
     # Helper for the /subscriptions/{ID}/databases endpoint
