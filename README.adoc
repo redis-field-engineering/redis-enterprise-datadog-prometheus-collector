@@ -24,10 +24,10 @@ To use the {name}, you will need:
 
 Additionally, you will need the following information:
 
-* A https://docs.datadoghq.com/account_management/api-app-keys/[DataDog API key]
-* The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription
-* The https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API account] key for your Redis Cloud account
-* An https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API user key] for your Redis Cloud account
+* A https://docs.datadoghq.com/account_management/api-app-keys/[DataDog API key] associated with your DataDog account.
+* The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription. This private endpoint will look something like this: `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`. You can provide the private endpoint for any of the databases from your subscription. This project will then monitor all of your subscription's databases.
+* The https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API account key] for your Redis Cloud account. There is one API account per Redis Cloud account.
+* An https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API user key] for your Redis Cloud account. You should create a unique user key for this project.
 
 == Usage
 
