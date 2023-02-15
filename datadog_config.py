@@ -14,7 +14,7 @@ def get_cluster_fqdn(databse_endpoint):
 
 if __name__ == "__main__":
 
-  cluster_fqdn = get_cluster_fqdn(os.getenv("REDIS_CLOUD_ENDPOINT_URL"))
+  cluster_fqdn = get_cluster_fqdn(os.getenv("REDIS_CLOUD_PRIVATE_ENDPOINT"))
 
   redis_ca_cert = os.getenv("REDIS_CLOUD_CA_CERT")
   ca_cert_present = redis_ca_cert != None

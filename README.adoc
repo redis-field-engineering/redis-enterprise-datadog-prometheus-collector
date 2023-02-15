@@ -5,12 +5,15 @@
 
 = Redis Cloud DataDog Prometheus Collector
 
-The {name} collects metrics from a Redis Cloud subscription using Prometheus and then exports those metrics to DataDog. This project is provided as a Docker image for ease of use.
+The {name} collects metrics from a Redis Cloud subscription's Prometheus endpoint and then exports those metrics to DataDog. This project is provided as a Docker image for ease of use.
+
+You can run this container in any environment that is VPC-peered with your Redis Cloud subscription.
 
 == Table of Contents
 
 * link:#Requirements[Requirements]
 * link:#Usage[Usage]
+* link:#Troubleshooting[Troubleshooting]
 * link:#Support[Support]
 * link:#License[License]
 
@@ -34,13 +37,31 @@ Additionally, you will need the following information:
 You can run the container as follows. Note that all of the specified environment variables are required:
 
 ```
-docker run -e DATADOG_SITE=datadoghq.com \
-           -e DATADOG_API_KEY=<API_KEY> \
-		   -e REDIS_CLOUD_ENDPOINT_URL=<REDIS_CLOUD_ENDPOINT> \
-		   -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
-		   -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
-		   fieldengineering/redis-cloud-datadog
+docker run -d -e DATADOG_SITE=datadoghq.com \
+              -e DATADOG_API_KEY=<API_KEY> \
+		      -e REDIS_CLOUD_PRIVATE_ENDPOINT=<REDIS_CLOUD_ENDPOINT> \
+		      -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
+		      -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
+		      fieldengineering/redis-cloud-datadog
 ```
+
+If the DataDog agent is running and able to collect metrics, you'll see these metrics in the DataDog console within a few minutes. These metrics will be prefixed with `redise`. 
+
+== Troubleshooting
+
+You can confirm that metrics are being collected correctly by viewing the DataDog agent logs:
+
+``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/datadog.log``
+
+If DataDog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that it's connecting to the correct URL. This URL is derived from the private endpoint. For the endpoint `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:19694`, the Prometheus URL will be `https://internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:8070/metric`
+
+If you need to dig deeper, consult the logs for the Redis Cloud API metrics collector:
+
+``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/cloud-api.log``
+
+You may also want to view the supervisor logs, which supervises the DataDog agent and the Redis Cloud API metrics collector:
+
+``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/supervisord.log``
 
 == Support
 
