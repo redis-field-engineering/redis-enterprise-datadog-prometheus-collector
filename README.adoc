@@ -3,6 +3,8 @@
 :project-name:       redis-cloud-datadog-prometheus-collector
 :name:               Redis Cloud DataDog Prometheus Collector
 
+= Redis Cloud DataDog Prometheus Collector
+
 The {name} collects metrics from a Redis Cloud subscription using Prometheus and then exports those metrics to DataDog. This project is provided as a Docker image for ease of use.
 
 == Table of Contents
