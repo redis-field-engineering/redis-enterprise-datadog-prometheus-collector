@@ -32,4 +32,3 @@ COPY start_ddagent.sh /start_ddagent.sh
 COPY start_cloud_exporter.sh /start_cloud_exporter.sh
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf" ]
-#CMD [ "/bin/bash" ]
