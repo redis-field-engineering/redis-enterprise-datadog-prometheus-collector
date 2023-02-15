@@ -33,8 +33,8 @@ Additionally, you will need the following information:
 You can run the container as follows. Note that all of the specified environment variables are required:
 
 ```
-docker run -e DATADOG_API_KEY=<API_KEY> \
-           -e DATADOG_SITE=datadoghq.com \
+docker run -e DATADOG_SITE=datadoghq.com \
+           -e DATADOG_API_KEY=<API_KEY> \
 		   -e REDIS_CLOUD_ENDPOINT_URL=<REDIS_CLOUD_ENDPOINT> \
 		   -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
 		   -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
@@ -44,3 +44,8 @@ docker run -e DATADOG_API_KEY=<API_KEY> \
 == Support
 
 The {name} is supported by Redis, Inc. on a good faith effort basis. To report bugs, request features, or receive assistance, please https://github.com/{project-owner}/{project-name}/issues[file an issue].
+
+== License
+
+{name} is licensed under the MIT License. Copyright (C) 2023 Redis, Inc.
+
