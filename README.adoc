@@ -66,7 +66,15 @@ echo -n "" | openssl s_client -showcerts -servername server \
 	-connect <PROMETHEUS_HOST_PORT> > cacert.pem
 ```
 
-This will write a file called `cacert.pem`. Open the file and remove any text that precedes `-----BEGIN CERTIFICATE-----` at the head of the file. In addition, remove any text that comes after `-----END CERTIFICATE-----` at the end of the file.
+This will write a file called `cacert.pem`. Open the file and remove any text that precedes 
+
+``-----BEGIN CERTIFICATE-----``
+
+at the head of the file. In addition, remove any text that comes after
+
+``-----END CERTIFICATE-----``
+
+at the end of the file.
 
 You'll then pass the contents of this file as an environment variable when you start the container:
 
@@ -86,7 +94,13 @@ You can confirm that metrics are being collected correctly by viewing the DataDo
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/datadog.log``
 
-If DataDog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that the agent is connecting to the correct URL. This URL is derived from the private endpoint. For the endpoint `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:19694`, the Prometheus URL will be `https://internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:8070/metric`
+If DataDog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that the agent is connecting to the correct URL. This URL is derived from the private endpoint. For the private endpoint
+
+`redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:19694`
+
+the Prometheus URL will be:
+
+`https://internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:8070/metric`
 
 If you're not seeing the expected subscription-level metrics (e.g., `redise.bdb_estimated_max_throughput`), consult the logs for the Redis Cloud API metrics collector:
 
