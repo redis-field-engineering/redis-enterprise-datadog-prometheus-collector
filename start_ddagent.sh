@@ -1,5 +1,6 @@
 echo "api_key: ${DATADOG_API_KEY}" > /etc/datadog-agent/datadog.yaml
 echo "site: ${DATADOG_SITE}" >> /etc/datadog-agent/datadog.yaml
+echo "${REDIS_CLOUD_CA_CERT}" > /etc/datadog-agent/conf.d/prometheus.d/ca.pem
 
 python3 datadog_config.py
 

@@ -27,7 +27,7 @@ if __name__ == "__main__":
 instances:
   - prometheus_url: https://internal.{{ cluster_fqdn }}:8070/metric
 {% if ca_cert_present %}
-    ssl_ca_cert: /etc/datadog-agent/conf.d/prometheus.d/ca.pem"
+    ssl_ca_cert: /etc/datadog-agent/conf.d/prometheus.d/ca.pem
 {% else %}
     ssl_ca_cert: false
 {% endif %}
