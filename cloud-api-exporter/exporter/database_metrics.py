@@ -20,7 +20,6 @@ class DatabaseMetricsTransformer():
             database_id = stats["databaseId"],
             database_name = stats["name"]
         )
-        logging.info(f"Updating published Prometheus metrics for database {metrics}")
         if "throughputMeasurement" in stats:
             throughput = stats["throughputMeasurement"]
             if throughput["by"] == "operations-per-second":
@@ -28,4 +27,7 @@ class DatabaseMetricsTransformer():
         
         if "dataPersistence" in stats:
             metrics.data_persistence = stats["dataPersistence"]
+
+        logging.info(f"Updated published Prometheus metrics for database {metrics}")
+
         return metrics
