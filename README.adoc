@@ -38,9 +38,9 @@ docker run -e DATADOG_API_KEY=<API_KEY> \
 		   -e REDIS_CLOUD_ENDPOINT_URL=<REDIS_CLOUD_ENDPOINT> \
 		   -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
 		   -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
-		   kbredis/ddtest
+		   fieldengineering/redis-cloud-datadog
 ```
 
 == Support
 
-{name} is supported by Redis, Inc. on a good faith effort basis. To report bugs, request features, or receive assistance, please https://github.com/{project-owner}/{project-name}/issues[file an issue].
+The {name} is supported by Redis, Inc. on a good faith effort basis. To report bugs, request features, or receive assistance, please https://github.com/{project-owner}/{project-name}/issues[file an issue].
