@@ -27,8 +27,8 @@ To use the {name}, you will need:
 
 Additionally, you will need the following information:
 
-* A https://docs.datadoghq.com/account_management/api-app-keys/[DataDog API key] associated with your DataDog account.
-* The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription. This private endpoint will look something like this: `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`. You can provide the private endpoint for any of the databases from your subscription. This project will then monitor all of your subscription's databases.
+* A https://docs.datadoghq.com/account_management/api-app-keys/[DataDog API key] associated with your DataDog account
+* The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription. This private endpoint will look something like this: `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`. You can provide the private endpoint for any of the databases from your subscription. The DataDog agent will then monitor all of your subscription's databases.
 * The https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API account key] for your Redis Cloud account. There is one API account per Redis Cloud account.
 * An https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API user key] for your Redis Cloud account. You should create a unique user key for this project.
 
@@ -38,45 +38,46 @@ You can run the container as follows. Note that all of the specified environment
 
 ```
 docker run -d -e DATADOG_SITE=datadoghq.com \
-              -e DATADOG_API_KEY=<API_KEY> \
-		      -e REDIS_CLOUD_PRIVATE_ENDPOINT=<REDIS_CLOUD_ENDPOINT> \
-		      -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
-		      -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
-		      fieldengineering/redis-cloud-datadog
+	-e DATADOG_API_KEY=<API_KEY> \
+	-e REDIS_CLOUD_PRIVATE_ENDPOINT=<REDIS_CLOUD_ENDPOINT> \
+	-e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
+	-e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
+	fieldengineering/redis-cloud-datadog
 ```
 
 If the DataDog agent is running and able to collect metrics, you'll see these metrics in the DataDog console within a few minutes. These metrics will be prefixed with `redise`. 
 
-=== Verifying the certificate chain
+=== Verifying the certificate chain (optional)
 
-The DataDog agent connects to the Redis Cloud Prometheus endpoint over HTTPS. For additional security, you can optionally tell the DataDog agent to verify the certificate chain. To do this, first get the Prometheus endpoint from your database endpoint.
+The DataDog agent connects to the Redis Cloud Prometheus endpoint over HTTPS. For additional security, you can *optionally* tell the DataDog agent to verify the certificate chain. To do this, first get the Prometheus host and port from your database endpoint.
 
 For the private endpoint
 
 `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`
 
-the Prometheus endpoint will be:
+the Prometheus host and port will be:
 
 `internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:8070`
 
-Once you have the Prometheus endpoint, download the certificate chain by running the following command:
+Once you have the Prometheus host and port, download the certificate chain by running the following command:
 
 ```
-echo -n "" | openssl s_client -showcerts -servername server -connect <PROMETHEUS_ENDPOINT> > cacert.pem
+echo -n "" | openssl s_client -showcerts -servername server \
+	-connect <PROMETHEUS_HOST_PORT> > cacert.pem
 ```
 
-This will write a file called `cacert.pem`. Open the file and remove any text the precedes `-----BEGIN CERTIFICATE-----` at the head of the file. In addition, remove any text that comes after `-----END CERTIFICATE-----` at the end of the file.
+This will write a file called `cacert.pem`. Open the file and remove any text that precedes `-----BEGIN CERTIFICATE-----` at the head of the file. In addition, remove any text that comes after `-----END CERTIFICATE-----` at the end of the file.
 
 You'll then pass the contents of this file as an environment variable when you start the container:
 
 ```
 docker run -d -e DATADOG_SITE=datadoghq.com \
-              -e DATADOG_API_KEY=<API_KEY> \
-		      -e REDIS_CLOUD_PRIVATE_ENDPOINT=<REDIS_CLOUD_ENDPOINT> \
-		      -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
-		      -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
-		      -e REDIS_CLOUD_CA_CERT=$(cat cacert.pem) \
-		      fieldengineering/redis-cloud-datadog
+	-e DATADOG_API_KEY=<API_KEY> \
+	-e REDIS_CLOUD_PRIVATE_ENDPOINT=<REDIS_CLOUD_ENDPOINT> \
+	-e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
+	-e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
+	-e REDIS_CLOUD_CA_CERT=$(cat cacert.pem) \
+	fieldengineering/redis-cloud-datadog
 ```
 
 == Troubleshooting
@@ -85,13 +86,13 @@ You can confirm that metrics are being collected correctly by viewing the DataDo
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/datadog.log``
 
-If DataDog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that it's connecting to the correct URL. This URL is derived from the private endpoint. For the endpoint `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:19694`, the Prometheus URL will be `https://internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:8070/metric`
+If DataDog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that the agent is connecting to the correct URL. This URL is derived from the private endpoint. For the endpoint `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:19694`, the Prometheus URL will be `https://internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:8070/metric`
 
-If you need to dig deeper, consult the logs for the Redis Cloud API metrics collector:
+If you're not seeing the expected subscription-level metrics (e.g., `redise.bdb_estimated_max_throughput`), consult the logs for the Redis Cloud API metrics collector:
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/cloud-api.log``
 
-You may also want to view the supervisor logs, which supervises the DataDog agent and the Redis Cloud API metrics collector:
+You may also want to view the `supervisord` logs, which manages the DataDog agent and the Redis Cloud API metrics collector:
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/supervisord.log``
 
@@ -101,5 +102,4 @@ The {name} is supported by Redis, Inc. on a good faith effort basis. To report b
 
 == License
 
-{name} is licensed under the MIT License. Copyright (C) 2023 Redis, Inc.
-
+This code in this repository is licensed under the MIT License. Copyright (C) 2023 Redis, Inc.
