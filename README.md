@@ -1,56 +1,44 @@
-# Dockerized Build of Redis Cloud Prometheus Collector
+:linkattrs:
+:project-owner:      redis-field-engineering
+:project-name:       redis-cloud-datadog-prometheus-collector
+:name:               Redis Cloud DataDog Prometheus Collector
 
-## Prerequisites
+The {name} collects metrics from a Redis Cloud subscription using Prometheus and then exports those metrics to DataDog. This project is provided as a Docker image for ease of use.
 
-1) Datadog API key
-```
-   Can be obtained from your Datadog account
-```
+== Table of Contents
 
-2) Cloud Internal Endpoint
-```
-   Note: remove the redis-### from the beginning
-         it should look like https://internal.blah.us-central1-mz.gcp.cloud.rlrcp.com:8070/metrics
-```
+* link:#Requirements[Requirements]
+* link:#Usage[Usage]
+* link:#Support[Support]
 
-## Running the Container
+== Requirements
 
-```
-docker run --rm -e DATADOG_API_KEY=<DATADOG-API-KEY> -e DATADOG_SITE=datadoghq.com \
-	-e REDIS_CLOUD_ENDPOINT_URL=<FQDN:https://internal.blah.us-central1-mz.gcp.cloud.rlrcp.com:8070/metrics> \
-	maguec/redisenterprise-rs-hostedcloud
-```
+To use the {name}, you will need:
 
-## Running the Container with TLS CA Cert
+* A Redis Cloud account with a https://docs.redis.com/latest/rc/subscriptions/create-flexible-subscription/[Flexible or Annual subscription]
+* A https://www.datadoghq.com/[DataDog account]
+* A container runtime that is https://docs.redis.com/latest/rc/security/vpc-peering/[VPC-peered with your Redis Cloud subscription]
 
-### Download the CA Cert
+Additionally, you will need the following information:
 
-```
-echo -n "" | openssl s_client -showcerts -servername server -connect internal.blah.us-central1-mz.gcp.cloud.rlrcp.com:8070 > cacert.pem
+* A https://docs.datadoghq.com/account_management/api-app-keys/[DataDog API key]
+* The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription
+* The https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API account] key for your Redis Cloud account
+* An https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API user key] for your Redis Cloud account
 
-# Edit the file to only keep what starts with -----BEGIN CERTIFICATE----- and ends with -----END CERTIFICATE-----
-```
+== Usage
 
-### Run the container with the cert env var set
+You can run the container as follows. Note that all of the specified environment variables are required:
 
 ```
-CA_CERT=$(cat cacert.pem)
-docker run --rm -e DATADOG_API_KEY=<DATADOG-API-KEY> -e DATADOG_SITE=datadoghq.com \
-	-e REDIS_CLOUD_ENDPOINT_URL=https://mague.demo-azure.maguec.com:8070/metrics \
-	-e REDIS_CLOUD_CA_CERT="${CA_CERT}" \
- 	maguec/redisenterprise-rs-hostedcloud
+docker run -e DATADOG_API_KEY=<API_KEY> \
+           -e DATADOG_SITE=datadoghq.com \
+		   -e REDIS_CLOUD_ENDPOINT_URL=<REDIS_CLOUD_ENDPOINT> \
+		   -e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
+		   -e REDIS_CLOUD_API_SECRET=<SECRET_USER_KEY> \
+		   kbredis/ddtest
 ```
 
-## Building the Container
+== Support
 
-edit the Makefile and change maguec to your docker prefix
-
-```
-make
-```
-
-## Support 
-
-Good faith effort support is available to Redis Enterprise licensed customers from field.engineers@redis.com. 
-In addition, Community support is available through Github
-
+{name} is supported by Redis, Inc. on a good faith effort basis. To report bugs, request features, or receive assistance, please https://github.com/{project-owner}/{project-name}/issues[file an issue].
