@@ -12,6 +12,7 @@ The {name} collects metrics from a Redis Cloud subscription using Prometheus and
 * link:#Requirements[Requirements]
 * link:#Usage[Usage]
 * link:#Support[Support]
+* link:#License[License]
 
 == Requirements
 
