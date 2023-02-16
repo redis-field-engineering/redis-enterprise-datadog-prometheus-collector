@@ -106,7 +106,7 @@ If you're not seeing the expected subscription-level metrics (e.g., `redise.bdb_
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/cloud-api.log``
 
-You may also want to view the `supervisord` logs, which manages the DataDog agent and the Redis Cloud API metrics collector:
+You may also want to view the `supervisord` logs. `supervisord` manages the DataDog agent and the Redis Cloud API metrics collector.
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/supervisord.log``
 
