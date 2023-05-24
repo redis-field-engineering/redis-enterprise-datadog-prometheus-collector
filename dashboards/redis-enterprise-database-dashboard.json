@@ -16,7 +16,7 @@
                             {
                                 "data_source": "metrics",
                                 "name": "query1",
-                                "query": "avg:rde.bdb_avg_latency{$cluster,$database}",
+                                "query": "avg:redise.bdb_avg_latency{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -75,12 +75,12 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_avg_read_latency{$cluster,$database}"
+                                "query": "avg:redise.bdb_avg_read_latency{$cluster,$database}"
                             },
                             {
                                 "name": "query2",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_avg_write_latency{$cluster,$database}"
+                                "query": "avg:redise.bdb_avg_write_latency{$cluster,$database}"
                             }
                         ],
                         "response_format": "timeseries",
@@ -136,17 +136,17 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_read_req{$cluster,$database}"
+                                "query": "avg:redise.bdb_read_req{$cluster,$database}"
                             },
                             {
                                 "name": "query2",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_write_req{$cluster,$database}"
+                                "query": "avg:redise.bdb_write_req{$cluster,$database}"
                             },
                             {
                                 "name": "query3",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_other_req{$cluster,$database}"
+                                "query": "avg:redise.bdb_other_req{$cluster,$database}"
                             }
                         ],
                         "response_format": "timeseries",
@@ -180,7 +180,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "max:rde.bdb_total_req{$cluster,$database}",
+                                "query": "max:redise.bdb_total_req{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -220,7 +220,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "max:rde.bdb_shard_cpu_system{$cluster,$database}",
+                                "query": "max:redise.bdb_shard_cpu_system{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -276,12 +276,12 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_main_thread_cpu_system{$cluster,$database}"
+                                "query": "avg:redise.bdb_main_thread_cpu_system{$cluster,$database}"
                             },
                             {
                                 "name": "query2",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_main_thread_cpu_user{$cluster,$database}"
+                                "query": "avg:redise.bdb_main_thread_cpu_user{$cluster,$database}"
                             }
                         ],
                         "response_format": "timeseries",
@@ -340,12 +340,12 @@
                             {
                                 "name": "query2",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_ingress_bytes{$cluster,$database}"
+                                "query": "avg:redise.bdb_ingress_bytes{$cluster,$database}"
                             },
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_egress_bytes{$cluster,$database}"
+                                "query": "avg:redise.bdb_egress_bytes{$cluster,$database}"
                             }
                         ],
                         "response_format": "timeseries",
@@ -379,7 +379,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "max:rde.bdb_conns{$cluster,$database}",
+                                "query": "max:redise.bdb_conns{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -420,13 +420,13 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_used_memory{$cluster,$database}",
+                                "query": "avg:redise.bdb_used_memory{$cluster,$database}",
                                 "aggregator": "last"
                             },
                             {
                                 "name": "query2",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_memory_limit{$cluster,$database}",
+                                "query": "avg:redise.bdb_memory_limit{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -481,7 +481,7 @@
                             {
                                 "data_source": "metrics",
                                 "name": "query1",
-                                "query": "avg:rde.bdb_used_memory{$cluster,$database}"
+                                "query": "avg:redise.bdb_used_memory{$cluster,$database}"
                             }
                         ],
                         "response_format": "timeseries",
@@ -528,7 +528,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_no_of_keys{$cluster,$database}"
+                                "query": "avg:redise.bdb_no_of_keys{$cluster,$database}"
                             }
                         ],
                         "response_format": "timeseries",
@@ -562,13 +562,13 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_read_misses{$cluster,$database}",
+                                "query": "avg:redise.bdb_read_misses{$cluster,$database}",
                                 "aggregator": "avg"
                             },
                             {
                                 "name": "query2",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_write_misses{$cluster,$database}",
+                                "query": "avg:redise.bdb_write_misses{$cluster,$database}",
                                 "aggregator": "avg"
                             }
                         ],
@@ -607,7 +607,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "sum:rde.bdb_memory_limit{$cluster,$database}",
+                                "query": "sum:redise.bdb_memory_limit{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -648,7 +648,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_fork_cpu_system{$cluster,$database}",
+                                "query": "avg:redise.bdb_fork_cpu_system{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
@@ -687,7 +687,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_evicted_objects{$cluster,$database}",
+                                "query": "avg:redise.bdb_evicted_objects{$cluster,$database}",
                                 "aggregator": "avg"
                             }
                         ],
@@ -726,7 +726,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_expired_objects{$cluster,$database}",
+                                "query": "avg:redise.bdb_expired_objects{$cluster,$database}",
                                 "aggregator": "avg"
                             }
                         ],
@@ -767,7 +767,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "avg:rde.bdb_instantaneous_ops_per_sec{$cluster,$database}",
+                                "query": "avg:redise.bdb_instantaneous_ops_per_sec{$cluster,$database}",
                                 "aggregator": "avg"
                             }
                         ],
@@ -805,7 +805,7 @@
                             {
                                 "name": "query1",
                                 "data_source": "metrics",
-                                "query": "max:rde.bdb_no_of_keys{$cluster,$database}",
+                                "query": "max:redise.bdb_no_of_keys{$cluster,$database}",
                                 "aggregator": "last"
                             }
                         ],
