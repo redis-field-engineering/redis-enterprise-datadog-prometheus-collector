@@ -1,11 +1,11 @@
 :linkattrs:
 :project-owner:      redis-field-engineering
 :project-name:       redis-cloud-datadog-prometheus-collector
-:name:               Redis Cloud Datadog Prometheus Collector
+:name:               Redis Cloud DataDog Prometheus Collector
 
-= Redis Cloud Datadog Prometheus Collector
+= Redis Cloud DataDog Prometheus Collector
 
-The {name} collects metrics from a Redis Cloud subscription's Prometheus endpoint and then exports those metrics to Datadog. This project is provided as a Docker image for ease of use.
+The {name} collects metrics from a Redis Cloud subscription's Prometheus endpoint and then exports those metrics to DataDog. This project is provided as a Docker image for ease of use.
 
 You can run this container in any environment that is VPC-peered with your Redis Cloud subscription.
 
@@ -22,12 +22,12 @@ You can run this container in any environment that is VPC-peered with your Redis
 To use the {name}, you will need:
 
 * A Redis Cloud account with a https://docs.redis.com/latest/rc/subscriptions/create-flexible-subscription/[Flexible or Annual subscription]
-* A https://www.datadoghq.com/[Datadog account]
+* A https://www.datadoghq.com/[DataDog account]
 * A container runtime that is https://docs.redis.com/latest/rc/security/vpc-peering/[VPC-peered with your Redis Cloud subscription]
 
 Additionally, you will need the following information:
 
-* A https://docs.datadoghq.com/account_management/api-app-keys/[Datadog API key] associated with your Datadog account
+* A https://docs.datadoghq.com/account_management/api-app-keys/[DataDog API key] associated with your Datadog account
 * The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription. This private endpoint will look something like this: `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`. You can provide the private endpoint for any of the databases from your subscription. The Datadog agent will then monitor all of your subscription's databases.
 * The https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API account key] for your Redis Cloud account. There is one API account key per Redis Cloud account.
 * An https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API user key] for your Redis Cloud account. You should create a unique user key for this project.
@@ -38,6 +38,7 @@ You can run the container as follows. Note that all of the specified environment
 
 ```
 docker run -d -e DATADOG_SITE=datadoghq.com \
+    -e DD_HOSTNAME_TRUST_UTS_NAMESPACE=true \
 	-e DATADOG_API_KEY=<API_KEY> \
 	-e REDIS_CLOUD_PRIVATE_ENDPOINT=<REDIS_CLOUD_ENDPOINT> \
 	-e REDIS_CLOUD_API_ACCOUNT_KEY=<SECRET_ACCOUNT_KEY> \
@@ -90,11 +91,11 @@ docker run -d -e DATADOG_SITE=datadoghq.com \
 
 == Troubleshooting
 
-You can confirm that metrics are being collected correctly by viewing the Datadog agent logs:
+You can confirm that metrics are being collected correctly by viewing the DataDog agent logs:
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/datadog.log``
 
-If Datadog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that the agent is connecting to the correct URL. This URL is derived from the private endpoint. For the private endpoint
+If DataDog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that the agent is connecting to the correct URL. This URL is derived from the private endpoint. For the private endpoint
 
 `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:19694`
 
@@ -106,7 +107,7 @@ If you're not seeing the expected subscription-level metrics (e.g., `redise.bdb_
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/cloud-api.log``
 
-You may also want to view the `supervisord` logs. `supervisord` manages the Datadog agent and the Redis Cloud API metrics collector.
+You may also want to view the `supervisord` logs. `supervisord` manages the DataDog agent and the Redis Cloud API metrics collector.
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/supervisord.log``
 
