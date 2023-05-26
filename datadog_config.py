@@ -57,6 +57,8 @@ instances:
       - bdb_total_req_max
       - bdb_used_memory
       - bdb_write_req
+      - bdb_read_hits
+      - bdb_read_misses
       - listener_acc_latency
       - listener_conns
       - listener_total_req
