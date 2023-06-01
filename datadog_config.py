@@ -34,42 +34,8 @@ instances:
     namespace: redise
     max_returned_metrics: 2000
     metrics:
-      - bdb_avg_latency
-      - bdb_avg_latency_max
-      - bdb_avg_other_latency
-      - bdb_avg_read_latency
-      - bdb_avg_write_latency
-      - bdb_conns
-      - bdb_egress_bytes
-      - bdb_evicted_objects
-      - bdb_expired_objects
-      - bdb_fork_cpu_system
-      - bdb_ingress_bytes
-      - bdb_main_thread_cpu_system
-      - bdb_main_thread_cpu_system_max
-      - bdb_memory_limit
-      - bdb_no_of_keys
-      - bdb_other_req
-      - bdb_read_req
-      - bdb_shard_cpu_system
-      - bdb_shard_cpu_system_max
-      - bdb_total_req
-      - bdb_total_req_max
-      - bdb_used_memory
-      - bdb_write_req
-      - bdb_read_hits
-      - bdb_read_misses
-      - listener_acc_latency
-      - listener_conns
-      - listener_total_req
-      - bdb_crdt_syncer_egress_bytes
-      - bdb_crdt_syncer_egress_bytes_decompressed
-      - bdb_crdt_syncer_ingress_bytes
-      - bdb_crdt_syncer_ingress_bytes_decompressed
-      - bdb_crdt_syncer_local_ingress_lag_time
-      - bdb_crdt_syncer_pending_local_writes_max
-      - bdb_crdt_syncer_pending_local_writes_min
-      - bdb_crdt_syncer_status
+      - "*"
+
   - prometheus_url: http://localhost:8000/
     ssl_ca_cert: false
     namespace: redise
