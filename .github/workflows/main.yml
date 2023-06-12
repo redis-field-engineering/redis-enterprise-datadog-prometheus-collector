@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Docker Build
       run: docker build . --file Dockerfile --tag redis/datadog-exporter:latest
-    - uses: anchore/scan-action@v3
+    - uses: anchore/scan-action@v2
       with:
         image: "redis/datadog-exporter:latest"
         fail-build: true
