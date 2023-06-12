@@ -7,11 +7,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Docker Build
       run: docker build . --file Dockerfile --tag redis/datadog-exporter:latest
-    - uses: anchore/scan-action@v3
+    - uses: anchore/scan-action@v1
       id: scan
       with:
         image: "redis/datadog-exporter:latest"
-        fail-build: false
+        fail-build: true
         severity-cutoff: critical
     - name: upload Anchore scan SARIF report
       uses: github/codeql-action/upload-sarif@v2
