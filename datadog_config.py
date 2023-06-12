@@ -35,6 +35,14 @@ if __name__ == "__main__":
 
   template = """init_config:
 instances:
+  - prometheus_url: http://localhost:8000/
+    ssl_ca_cert: false
+    namespace: redise
+    max_returned_metrics: 2000
+    metrics:
+      - bdb_estimated_max_throughput
+      - bdb_data_persistence
+      
   - prometheus_url: https://internal.{{ cluster_fqdn }}:8070/metric
 {% if ca_cert_present %}
     ssl_ca_cert: /etc/datadog-agent/conf.d/prometheus.d/ca.pem
@@ -45,14 +53,6 @@ instances:
     max_returned_metrics: 2000
     metrics:
       - "*"
-
-  - prometheus_url: http://localhost:8000/
-    ssl_ca_cert: false
-    namespace: redise
-    max_returned_metrics: 2000
-    metrics:
-      - bdb_estimated_max_throughput
-      - bdb_data_persistence
   """
 
   data = {
