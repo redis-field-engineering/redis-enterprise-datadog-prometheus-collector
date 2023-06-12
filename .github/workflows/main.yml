@@ -1,0 +1,14 @@
+name: Anchore Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Docker Build
+      run: docker build . --file Dockerfile --tag testrepo/testimage:latest
+    - uses: anchore/scan-action@v1
+      with:
+        image-reference: "testrepo/testimage:latest"
+        dockerfile-path: "./Dockerfile"
+        fail-build: true
