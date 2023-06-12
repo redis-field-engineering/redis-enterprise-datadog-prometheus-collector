@@ -9,8 +9,8 @@ jobs:
       run: docker build . --file Dockerfile --tag redis/datadog-exporter:latest
     - uses: anchore/scan-action@v2
       with:
-        image-reference: "redis/datadog-exporter:latest"
-        dockerfile-path: "./Dockerfile"
+        image: "redis/datadog-exporter:latest"
+        path: "./Dockerfile"
         fail-build: true
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
