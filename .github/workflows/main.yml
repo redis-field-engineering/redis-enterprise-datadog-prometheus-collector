@@ -10,7 +10,7 @@ jobs:
     - uses: anchore/scan-action@v2
       with:
         image: "redis/datadog-exporter:latest"
-        fail-build: false
+        fail-build: true
     - name: Inspect action SARIF report
       run: cat ${{ steps.scan.outputs.sarif }}
     - name: Upload artifact
