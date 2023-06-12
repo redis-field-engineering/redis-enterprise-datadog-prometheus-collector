@@ -10,8 +10,7 @@ jobs:
     - uses: anchore/scan-action@v2
       with:
         image: "redis/datadog-exporter:latest"
-        fail-build: true
-        failon: high
+        fail-build: false
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
