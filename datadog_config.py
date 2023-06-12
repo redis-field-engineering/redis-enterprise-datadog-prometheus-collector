@@ -1,7 +1,15 @@
 import os
 import re
+import argparse
 from jinja2 import Template
 from jinja2 import Environment
+
+parser = argparse.ArgumentParser('datadog configuration')
+parser.add_argument('-o', '--overrides', type=str, default='./type_overrides.conf',
+                    help='the file from which to load types')
+parser.add_argument('-c', '--config', type=str, default='/etc/datadog-agent/conf.d/prometheus.d/conf.yaml',
+                    help='the location to which we write the config file')
+
 
 def get_cluster_fqdn(databse_endpoint):
     # Remove the port section if present
@@ -13,6 +21,8 @@ def get_cluster_fqdn(databse_endpoint):
     return str
 
 if __name__ == "__main__":
+
+  args = parser.parse_args()
 
   cluster_fqdn = get_cluster_fqdn(os.getenv("REDIS_CLOUD_PRIVATE_ENDPOINT"))
 
@@ -54,6 +64,18 @@ instances:
 
   template = env.from_string(template)
 
-  f = open("/etc/datadog-agent/conf.d/prometheus.d/conf.yaml", "w")
-  f.write(template.render(data))
-  f.close()
+  # now read the type overrides and append them to the end of the config - type_overrides.conf
+  lines = []
+  if os.path.isfile(args.overrides):
+      lines.append('  type_overrides:\n')  # indent two spaces and add a newline
+      with open(args.overrides, 'r') as overrides:
+        for override in overrides.readlines():
+          lines.append(f'      {override}')  # alignment requires four spaces
+  else:
+      print(f'override file not found: {args.overrides}')
+      exit(1)
+
+  overrides = ''.join(lines)
+  with open(args.config, "w") as output:
+    output.write(template.render(data))
+    output.write(overrides)
