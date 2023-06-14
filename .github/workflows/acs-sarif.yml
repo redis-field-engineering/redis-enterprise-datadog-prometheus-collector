@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       # Override language selection by uncommenting this and choosing your languages
       # with:
       #   languages: go, javascript, csharp, python, cpp, java
@@ -22,17 +22,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag redis/datadog-exporter:latest
     - name: Run the local anchore scan action itself with sarif generation enabled
-      uses: anchore/scan-action@v2
+      uses: anchore/scan-action@v3
       with:
         image: "redis/datadog-exporter:latest"
         debug: false
         acs-report-enable: true
         severity-cutoff: "Critical"
     - name: Upload Anchore Scan ACS Report
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: results.sarif
