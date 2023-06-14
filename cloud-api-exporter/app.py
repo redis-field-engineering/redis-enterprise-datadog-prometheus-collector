@@ -14,7 +14,7 @@ from prometheus_client import start_http_server
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 PORT = 8000
-SLEEP_TIME_SECONDS = 30
+SLEEP_TIME_SECONDS = 1200
 
 def monitor_redis_cloud_api_based_metrics(args):
     cluster_fqdn = get_cluster_fqdn(args.database_endpoint)
