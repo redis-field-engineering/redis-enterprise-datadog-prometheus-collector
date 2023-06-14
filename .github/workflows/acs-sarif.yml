@@ -29,8 +29,6 @@ jobs:
       uses: anchore/scan-action@v3
       with:
         image: "redis/datadog-exporter:latest"
-        debug: false
-        acs-report-enable: true
         severity-cutoff: "Critical"
     - name: Upload Anchore Scan ACS Report
       uses: github/codeql-action/upload-sarif@v2
