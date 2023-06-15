@@ -25,6 +25,8 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 COPY datadog_config.py /
 
+COPY type_overrides.conf /
+
 COPY cloud-api-exporter /cloud-api-exporter
 
 COPY start_ddagent.sh /start_ddagent.sh

@@ -1,7 +1,15 @@
 import os
 import re
+import argparse
 from jinja2 import Template
 from jinja2 import Environment
+
+parser = argparse.ArgumentParser('datadog configuration')
+parser.add_argument('-o', '--overrides', type=str, default='./type_overrides.conf',
+                    help='the file from which to load types')
+parser.add_argument('-c', '--config', type=str, default='/etc/datadog-agent/conf.d/prometheus.d/conf.yaml',
+                    help='the location to which we write the config file')
+
 
 def get_cluster_fqdn(databse_endpoint):
     # Remove the port section if present
@@ -14,6 +22,8 @@ def get_cluster_fqdn(databse_endpoint):
 
 if __name__ == "__main__":
 
+  args = parser.parse_args()
+
   cluster_fqdn = get_cluster_fqdn(os.getenv("REDIS_CLOUD_PRIVATE_ENDPOINT"))
 
   redis_ca_cert = os.getenv("REDIS_CLOUD_CA_CERT")
@@ -25,6 +35,14 @@ if __name__ == "__main__":
 
   template = """init_config:
 instances:
+  - prometheus_url: http://localhost:8000/
+    ssl_ca_cert: false
+    namespace: redise
+    max_returned_metrics: 2000
+    metrics:
+      - bdb_estimated_max_throughput
+      - bdb_data_persistence
+      
   - prometheus_url: https://internal.{{ cluster_fqdn }}:8070/metric
 {% if ca_cert_present %}
     ssl_ca_cert: /etc/datadog-agent/conf.d/prometheus.d/ca.pem
@@ -34,49 +52,7 @@ instances:
     namespace: redise
     max_returned_metrics: 2000
     metrics:
-      - bdb_avg_latency
-      - bdb_avg_latency_max
-      - bdb_avg_other_latency
-      - bdb_avg_read_latency
-      - bdb_avg_write_latency
-      - bdb_conns
-      - bdb_egress_bytes
-      - bdb_evicted_objects
-      - bdb_expired_objects
-      - bdb_fork_cpu_system
-      - bdb_ingress_bytes
-      - bdb_main_thread_cpu_system
-      - bdb_main_thread_cpu_system_max
-      - bdb_memory_limit
-      - bdb_no_of_keys
-      - bdb_other_req
-      - bdb_read_req
-      - bdb_shard_cpu_system
-      - bdb_shard_cpu_system_max
-      - bdb_total_req
-      - bdb_total_req_max
-      - bdb_used_memory
-      - bdb_write_req
-      - bdb_read_hits
-      - bdb_read_misses
-      - listener_acc_latency
-      - listener_conns
-      - listener_total_req
-      - bdb_crdt_syncer_egress_bytes
-      - bdb_crdt_syncer_egress_bytes_decompressed
-      - bdb_crdt_syncer_ingress_bytes
-      - bdb_crdt_syncer_ingress_bytes_decompressed
-      - bdb_crdt_syncer_local_ingress_lag_time
-      - bdb_crdt_syncer_pending_local_writes_max
-      - bdb_crdt_syncer_pending_local_writes_min
-      - bdb_crdt_syncer_status
-  - prometheus_url: http://localhost:8000/
-    ssl_ca_cert: false
-    namespace: redise
-    max_returned_metrics: 2000
-    metrics:
-      - bdb_estimated_max_throughput
-      - bdb_data_persistence
+      - "*"
   """
 
   data = {
@@ -88,6 +64,18 @@ instances:
 
   template = env.from_string(template)
 
-  f = open("/etc/datadog-agent/conf.d/prometheus.d/conf.yaml", "w")
-  f.write(template.render(data))
-  f.close()
+  # now read the type overrides and append them to the end of the config - type_overrides.conf
+  lines = []
+  if os.path.isfile(args.overrides):
+      lines.append('  type_overrides:\n')  # indent two spaces and add a newline
+      with open(args.overrides, 'r') as overrides:
+        for override in overrides.readlines():
+          lines.append(f'      {override}')  # alignment requires four spaces
+  else:
+      print(f'override file not found: {args.overrides}')
+      exit(1)
+
+  overrides = ''.join(lines)
+  with open(args.config, "w") as output:
+    output.write(template.render(data))
+    output.write(overrides)
