@@ -126,7 +126,7 @@ docker run -d -e DATADOG_SITE=datadoghq.com \
 
 == Dashboards
 
-This project includes sample Datadog dashboards that you can install to get you up and running quickly. See the /dashboards[dashboards] folder.
+This project includes sample Datadog dashboards that you can install to get you up and running quickly. See the link:/dashboards[dashboards] folder.
 
 == Troubleshooting
 
