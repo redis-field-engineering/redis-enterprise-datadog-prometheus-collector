@@ -21,7 +21,9 @@ RUN apt-get install -y supervisor
 
 RUN mkdir -p /var/log/supervisor
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord-cloud.conf /etc/supervisor/conf.d/supervisord-cloud.conf
+
+COPY supervisord-software.conf /etc/supervisor/conf.d/supervisord-software.conf
 
 COPY datadog_config.py /
 
@@ -33,4 +35,4 @@ COPY start_ddagent.sh /start_ddagent.sh
 
 COPY start_cloud_exporter.sh /start_cloud_exporter.sh
 
-CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf" ]
+CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord-cloud.conf" ]
