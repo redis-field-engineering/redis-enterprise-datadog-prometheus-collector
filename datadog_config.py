@@ -11,20 +11,22 @@ parser.add_argument('-c', '--config', type=str, default='/etc/datadog-agent/conf
                     help='the location to which we write the config file')
 
 
-def get_cluster_fqdn(databse_endpoint):
+def get_cloud_cluster_fqdn(database_endpoint):
     # Remove the port section if present
-    str = re.sub(":\d+", "", databse_endpoint)
+    str = re.sub(":\d+", "", database_endpoint)
     # Remove the "redis-12345" section if present
     str = re.sub("redis-\d+\.", "", str)
-    # Remove the "internal." section if present
-    str = re.sub("internal\.", "", str)
     return str
 
 if __name__ == "__main__":
 
   args = parser.parse_args()
 
-  cluster_fqdn = get_cluster_fqdn(os.getenv("REDIS_CLOUD_PRIVATE_ENDPOINT"))
+  private_endpoint = os.getenv("REDIS_CLOUD_PRIVATE_ENDPOINT")
+  if private_endpoint != None:
+     cluster_fqdn = get_cloud_cluster_fqdn(private_endpoint)
+  else:
+     cluster_fqdn = os.getenv("REDIS_SOFTWARE_FQDN")
 
   redis_ca_cert = os.getenv("REDIS_CLOUD_CA_CERT")
   ca_cert_present = redis_ca_cert != None
@@ -43,7 +45,7 @@ instances:
       - bdb_estimated_max_throughput
       - bdb_data_persistence
       
-  - prometheus_url: https://internal.{{ cluster_fqdn }}:8070/metric
+  - prometheus_url: https://{{ cluster_fqdn }}:8070/
 {% if ca_cert_present %}
     ssl_ca_cert: /etc/datadog-agent/conf.d/prometheus.d/ca.pem
 {% else %}
