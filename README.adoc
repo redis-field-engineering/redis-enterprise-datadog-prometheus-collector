@@ -5,7 +5,7 @@
 
 = Redis Enterprise Datadog Prometheus Collector
 
-The {name} collects metrics from a Redis Enterprise Software or Cloud Prometheus endpoint and then exports those metrics to Datadog. This project is provided as a Docker image for ease of use.
+The {name} collects metrics from a Redis Enterprise Software or Redis Cloud Prometheus endpoint and then exports those metrics to Datadog. This project is provided as a Docker image for ease of use. Run the image as a container, or use this image as a reference for your own Datadog installation.
 
 You can run this container in any environment that a connect with your cluster. For Redis Cloud deployments, your environment must be VPC-peered with your Redis Cloud subscription.
 
@@ -27,14 +27,13 @@ To use the {name}, you will need:
 
 Additionally, you will need a https://docs.datadoghq.com/account_management/api-app-keys/[Datadog API key] associated with your Datadog account
 
-For Redis Cloud users, you will require:
+For Redis Cloud users, you also need:
 
 * The https://docs.redis.com/latest/rc/databases/view-edit-database/[private endpoint] for one of the databases associated with your Redis Cloud subscription. This private endpoint will look something like this: `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`. You can provide the private endpoint for any of the databases from your subscription. The Datadog agent will then monitor all of your subscription's databases.
 * The https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API account key] for your Redis Cloud account. There is one API account key per Redis Cloud account.
 * An https://docs.redis.com/latest/rc/api/get-started/manage-api-keys/[API user key] for your Redis Cloud account. You should create a unique user key for this project.
 
-Redis Software users will need the fully-qualified domain name for your cluster.
-
+Redis Enterprise Software users will need the fully-qualified domain name for your cluster.
 
 == Usage
 
@@ -61,15 +60,15 @@ docker run -d -e DATADOG_SITE=datadoghq.com \
 	-e REDIS_SOFTWARE_FQDN=<REDIS_CLOUD_ENDPOINT> \
 	fieldengineering/redis-cloud-datadog
 	/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord-software.conf
-``` 
+```
 
 If the Datadog agent is running and able to collect metrics, you'll see these metrics in the Datadog console within a few minutes. These metrics will be prefixed with `redise`. 
 
-=== Verifying the certificate chain (optional for Redis Cloud users)
+=== Verifying the certificate chain (optional)
 
-The Datadog agent connects to the Redis Cloud Prometheus endpoint over HTTPS. For additional security, you can *optionally* tell the Datadog agent to verify the certificate chain. To do this, first get the Prometheus host and port from your database endpoint.
+The Datadog agent connects to the Redis Enterprise Prometheus endpoint over HTTPS. For additional security, you can *optionally* tell the Datadog agent to verify the certificate chain. To do this, first get the Prometheus host and port from your database endpoint.
 
-For the private endpoint
+For a Redis Cloud private endpoint
 
 `redis-12345.internal.c67890.us-central1-1.gcp.cloud.rlrcp.com:121212`
 
@@ -96,6 +95,8 @@ at the end of the file.
 
 You'll then pass the contents of this file as an environment variable when you start the container:
 
+For Redis Cloud users:
+
 ```
 docker run -d -e DATADOG_SITE=datadoghq.com \
 	-e DATADOG_API_KEY=<API_KEY> \
@@ -106,11 +107,29 @@ docker run -d -e DATADOG_SITE=datadoghq.com \
 	fieldengineering/redis-cloud-datadog
 ```
 
+For Redis Enterprise Software users:
+
+```
+docker run -d -e DATADOG_SITE=datadoghq.com \
+    -e DD_HOSTNAME_TRUST_UTS_NAMESPACE=true \
+	-e DATADOG_API_KEY=<API_KEY> \
+	-e REDIS_SOFTWARE_FQDN=<REDIS_CLOUD_ENDPOINT> \
+	-e REDIS_CA_CERT=$(cat cacert.pem) \
+	fieldengineering/redis-cloud-datadog
+	/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord-software.conf
+``` 
+
 == Troubleshooting
 
 You can confirm that metrics are being collected correctly by viewing the Datadog agent logs:
 
 ``docker exec -it <CONTAINER_ID> tail -n 1000 /tmp/datadog.log``
+
+You can also directly check the status of the Datadog agent by running:
+
+``docker exec -it <CONTAINER_ID> /opt/datadog-agent/bin/agent/agent status``
+
+=== For Redis Cloud users
 
 If Datadog is unable to connect to your Redis Cloud prometheus endpoint, confirm in the logs that the agent is connecting to the correct URL. This URL is derived from the private endpoint. For the private endpoint
 
