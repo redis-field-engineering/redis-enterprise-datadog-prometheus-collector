@@ -58,8 +58,9 @@ For Redis Software users:
 docker run -d -e DATADOG_SITE=datadoghq.com \
     -e DD_HOSTNAME_TRUST_UTS_NAMESPACE=true \
 	-e DATADOG_API_KEY=<API_KEY> \
-	-e REDIS_SOFTWARE_FQDN<REDIS_CLOUD_ENDPOINT> \
+	-e REDIS_SOFTWARE_FQDN=<REDIS_CLOUD_ENDPOINT> \
 	fieldengineering/redis-cloud-datadog
+	/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord-software.conf
 ``` 
 
 If the Datadog agent is running and able to collect metrics, you'll see these metrics in the Datadog console within a few minutes. These metrics will be prefixed with `redise`. 

@@ -45,10 +45,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
                     prog = 'Redis Cloud API Prometheus Exporter',
                     description = 'Expose Redis Cloud API stats through Prometheus')
-    parser.add_argument('-a', '--api-account-key')
-    parser.add_argument('-u', '--api-user-secret-key')
-    parser.add_argument('-i', '--api-fetch-interval', default=1200, type=int)
-    parser.add_argument('-e', '--database-endpoint', required=True)
+    parser.add_argument('-a', '--api-account-key', required=False)
+    parser.add_argument('-u', '--api-user-secret-key', required=False)
+    parser.add_argument('-i', '--api-fetch-interval', default=1200, type=int, required=False)
+    parser.add_argument('-e', '--database-endpoint', required=False)
 
     args = parser.parse_args()
 

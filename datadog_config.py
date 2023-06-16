@@ -37,6 +37,7 @@ if __name__ == "__main__":
 
   template = """init_config:
 instances:
+{% if redis_cloud_mode %}
   - prometheus_url: http://localhost:8000/
     ssl_ca_cert: false
     namespace: redise
@@ -44,6 +45,7 @@ instances:
     metrics:
       - bdb_estimated_max_throughput
       - bdb_data_persistence
+{% endif %}
       
   - prometheus_url: https://{{ cluster_fqdn }}:8070/
 {% if ca_cert_present %}
@@ -61,6 +63,9 @@ instances:
       "cluster_fqdn": cluster_fqdn,
       "ca_cert_present": ca_cert_present
   }
+
+  if private_endpoint != None:
+     data["redis_cloud_mode"] = True
 
   env = Environment(trim_blocks=True, lstrip_blocks=True)
 
