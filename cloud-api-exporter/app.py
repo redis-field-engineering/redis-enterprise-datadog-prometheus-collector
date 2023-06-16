@@ -14,13 +14,21 @@ from prometheus_client import start_http_server
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 PORT = 8000
-SLEEP_TIME_SECONDS = 1200
+DEFAULT_FETCH_INTERVAL = 300
+
+def get_fetch_interval(interval):
+    if interval is None or interval < 300:
+        logging.warn(f"Fetch interval is too low ({interval}). Setting interval to {DEFAULT_FETCH_INTERVAL}")
+        return DEFAULT_FETCH_INTERVAL
+    else:
+        return interval
 
 def monitor_redis_cloud_api_based_metrics(args):
     cluster_fqdn = get_cluster_fqdn(args.database_endpoint)
     fetcher = MetricsFetcher(cluster_fqdn, args.api_account_key, args.api_user_secret_key)
     transformer = DatabaseMetricsTransformer()
     exporter = MetricsExporter(cluster_fqdn)
+    fetch_interval_seconds = get_fetch_interval(args.api_fetch_interval)
     logging.info(f"Starting Prometheus server on port {PORT}...")
     start_http_server(PORT)
     while(True):
@@ -30,8 +38,8 @@ def monitor_redis_cloud_api_based_metrics(args):
         for stat in stats:
             metrics = transformer.get_database_metrics(stat)
             exporter.update(metrics)
-        logging.info(f"Sleeping for {SLEEP_TIME_SECONDS} seconds until next API fetch...")
-        time.sleep(SLEEP_TIME_SECONDS)
+        logging.info(f"Sleeping for {fetch_interval_seconds} seconds until next API fetch...")
+        time.sleep(fetch_interval_seconds)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -39,6 +47,7 @@ if __name__ == "__main__":
                     description = 'Expose Redis Cloud API stats through Prometheus')
     parser.add_argument('-a', '--api-account-key')
     parser.add_argument('-u', '--api-user-secret-key')
+    parser.add_argument('-i', '--api-fetch-interval', default=1200, type=int)
     parser.add_argument('-e', '--database-endpoint', required=True)
 
     args = parser.parse_args()
