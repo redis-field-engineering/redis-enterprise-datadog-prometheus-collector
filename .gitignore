@@ -2,3 +2,4 @@
 *.pem
 *.pyc
 *.swp
+**/.DS_Store
