@@ -3,7 +3,7 @@
 :project-name:       redis-enterprise-datadog-prometheus-collector
 :name:               Redis Enterprise Datadog Prometheus Collector
 
-= Redis Enterprise Datadog Prometheus Collector
+= [DEPRECATED] Redis Enterprise Datadog Prometheus Collector
 
 *This project is DEPRECATED. See our https://github.com/redis-field-engineering/redis-enterprise-observability/tree/main/datadog[Datadog integration instructions] for details on how to monitor your Redis Enteprise or Redis Cloud deployments with Datadog.*
 
